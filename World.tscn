@@ -1,9 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/ButtonStyles/blue_style_unpressed.tres" type="StyleBox" id=1]
 [ext_resource path="res://VirtualKeyboard.gd" type="Script" id=2]
 [ext_resource path="res://button_group.tres" type="ButtonGroup" id=3]
-[ext_resource path="res://Assets/space.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Textures/space.png" type="Texture" id=4]
 [ext_resource path="res://World.gd" type="Script" id=5]
 [ext_resource path="res://Assets/ButtonStyles/blue_style_pressed.tres" type="StyleBox" id=6]
 [ext_resource path="res://Assets/ButtonStyles/green_style_unpressed.tres" type="StyleBox" id=7]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Assets/ButtonStyles/yellow_style_unpressed.tres" type="StyleBox" id=11]
 [ext_resource path="res://Assets/ButtonStyles/green_style_pressed.tres" type="StyleBox" id=12]
 [ext_resource path="res://Assets/ButtonStyles/blank_style.tres" type="StyleBox" id=13]
+[ext_resource path="res://AcceptDialog.gd" type="Script" id=14]
 
 [node name="World" type="Node"]
 script = ExtResource( 5 )
@@ -692,6 +693,26 @@ rect_min_size = Vector2( 60, 0 )
 group = ExtResource( 3 )
 text = "BACK"
 
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+margin_left = 192.0
+margin_top = 144.0
+margin_right = 275.0
+margin_bottom = 202.0
+popup_exclusive = true
+window_title = ""
+script = ExtResource( 14 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Label2" type="Label" parent="AcceptDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 72.0
+margin_bottom = 22.0
+text = "YOU WIN!"
+
 [connection signal="update_keyboard" from="." to="VirtualKeyboard" method="_on_World_update_keyboard"]
 [connection signal="text_updated" from="VirtualKeyboard" to="." method="_on_VirtualKeyboard_text_updated"]
 [connection signal="word_submitted" from="VirtualKeyboard" to="." method="_on_VirtualKeyboard_word_submitted"]
+[connection signal="confirmed" from="AcceptDialog" to="." method="_on_AcceptDialog_confirmed"]

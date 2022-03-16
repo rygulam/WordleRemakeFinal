@@ -37,6 +37,10 @@ var letters_dict = {'a':'white', 'b':'white', 'c':'white', 'd':'white', 'e':'whi
 # used to update keyboard
 signal update_keyboard
 
+var green_texture = load("res://Assets/Textures/green_pressed.png")
+var gray_texture = load("res://Assets/Textures/grey_pressed.png")
+var yellow_texture = load("res://Assets/Textures/yellow_pressed.png")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -76,7 +80,7 @@ func _on_VirtualKeyboard_word_submitted():
 	# lookup in dictionary
 	if text_to_be_compared in word_list_array:
 		
-		compare_guess_to_goal_word(text_to_be_compared)
+		compare_guess_to_goal_word(text_to_be_compared, current_row)
 		
 		# If guesses remaining, then continue on
 		if current_row < word_guesses_max - 1:
@@ -84,20 +88,29 @@ func _on_VirtualKeyboard_word_submitted():
 			line_edit_node.clear()
 		else:
 			print('***** GAME OVER *****')
+			$AcceptDialog/Label2.text = ('YOU WIN')
+			$AcceptDialog.popup()
 			# TODO play end state of game here
 	else:
 		print('word not valid!!!')
 		# basically just do not continue
 
-func compare_guess_to_goal_word(guess):
+func compare_guess_to_goal_word(guess, current_row):
 	print('your guess is ' + guess)
 	
 	# check if goal word matches guess exactly
 	if guess == goal_word:
 		for index in goal_word.length():
 			letters_dict[guess[index]] = 'green'
+			word_groups[current_row].get_child(0).texture = green_texture
+			word_groups[current_row].get_child(1).texture = green_texture
+			word_groups[current_row].get_child(2).texture = green_texture
+			word_groups[current_row].get_child(3).texture = green_texture
+			word_groups[current_row].get_child(4).texture = green_texture
 		emit_signal("update_keyboard", letters_dict)
 		print('***** YOU WIN *****')
+		$AcceptDialog/Label2.text = ('YOU WIN')
+		$AcceptDialog.popup()
 		# TODO play end state of game here
 	else:
 		print('time to check every letter')
@@ -110,13 +123,19 @@ func compare_guess_to_goal_word(guess):
 				print('letter: ' + guess[index] + ' matches')
 				# update master letter list as green character
 				letters_dict[guess[index]] = 'green'
+				# update texture in word display on top
+				word_groups[current_row].get_child(index).texture = green_texture
 			elif guess[index] in goal_word:
 				print('letter: ' + guess[index] + ' is in word but not right place')
+				# update texture
+				word_groups[current_row].get_child(index).texture = yellow_texture
 				# do not override green with yellow
 				if letters_dict[guess[index]] != 'green':
 					letters_dict[guess[index]] = 'yellow'
 			else:
 				print('letter: ' + guess[index] + ' is NOT in word')
+				# update texture
+				word_groups[current_row].get_child(index).texture = gray_texture
 				letters_dict[guess[index]] = 'gray'
 		
 		# at the end, emit signal to update keyboard
@@ -137,3 +156,9 @@ func load_file(file):
 		index += 1
 	f.close()
 	return
+
+func _on_AcceptDialog_confirmed():
+	get_tree().reload_current_scene()
+
+func _on_AcceptDialog2_confirmed():
+	get_tree().reload_current_scene()
