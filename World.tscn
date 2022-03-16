@@ -1,12 +1,21 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://World.gd" type="Script" id=1]
+[ext_resource path="res://Assets/ButtonStyles/blue_style_unpressed.tres" type="StyleBox" id=1]
 [ext_resource path="res://VirtualKeyboard.gd" type="Script" id=2]
 [ext_resource path="res://button_group.tres" type="ButtonGroup" id=3]
 [ext_resource path="res://Assets/space.png" type="Texture" id=4]
+[ext_resource path="res://World.gd" type="Script" id=5]
+[ext_resource path="res://Assets/ButtonStyles/blue_style_pressed.tres" type="StyleBox" id=6]
+[ext_resource path="res://Assets/ButtonStyles/green_style_unpressed.tres" type="StyleBox" id=7]
+[ext_resource path="res://Assets/ButtonStyles/red_style_pressed.tres" type="StyleBox" id=8]
+[ext_resource path="res://Assets/ButtonStyles/red_style_unpressed.tres" type="StyleBox" id=9]
+[ext_resource path="res://yellow_style_pressed.tres" type="StyleBox" id=10]
+[ext_resource path="res://yellow_style_unpressed.tres" type="StyleBox" id=11]
+[ext_resource path="res://Assets/ButtonStyles/green_style_pressed.tres" type="StyleBox" id=12]
+[ext_resource path="res://Assets/ButtonStyles/blank_style.tres" type="StyleBox" id=13]
 
 [node name="World" type="Node"]
-script = ExtResource( 1 )
+script = ExtResource( 5 )
 
 [node name="LineEdit" type="LineEdit" parent="."]
 margin_left = 26.0
@@ -434,6 +443,10 @@ alignment = 1
 margin_right = 40.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 40, 0 )
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 6 )
+custom_styles/focus = ExtResource( 13 )
+custom_styles/normal = ExtResource( 1 )
 group = ExtResource( 3 )
 text = "Q"
 
@@ -442,6 +455,10 @@ margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 40, 0 )
+custom_styles/hover = ExtResource( 7 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/focus = ExtResource( 13 )
+custom_styles/normal = ExtResource( 7 )
 group = ExtResource( 3 )
 text = "W"
 
@@ -450,6 +467,10 @@ margin_left = 88.0
 margin_right = 128.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 40, 0 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 8 )
+custom_styles/focus = ExtResource( 13 )
+custom_styles/normal = ExtResource( 9 )
 group = ExtResource( 3 )
 text = "E"
 
@@ -458,6 +479,10 @@ margin_left = 132.0
 margin_right = 172.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 40, 0 )
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/focus = ExtResource( 13 )
+custom_styles/normal = ExtResource( 11 )
 group = ExtResource( 3 )
 text = "R"
 

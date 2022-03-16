@@ -27,7 +27,7 @@ var goal_word
 # GRAY - guessed, but not present in word
 # YELLOW - guessed, and present in word but not in correct place
 # GREEN - guessed, and in correct place in word
-var letters_dict = {'a':'white', 'b':'white', 'c':'white', 'd':'white', 'e':'white',
+var letters_dict = {'a':'green', 'b':'white', 'c':'white', 'd':'white', 'e':'white',
 					'f':'white', 'g':'white', 'h':'white', 'i':'white', 'j':'white',
 					'k':'white', 'l':'white', 'm':'white', 'n':'white', 'o':'white',
 					'p':'white', 'q':'white', 'r':'white', 's':'white', 't':'white',
@@ -95,7 +95,12 @@ func compare_guess_to_goal_word(guess):
 		# TODO play end state of game here
 	else:
 		print('time to check every letter')
-		
+	
+	update_keyboard()
+
+# used to update and change states of keyboard buttons
+func update_keyboard():
+	pass
 
 # loads in word file line-by-line and creates an array of strings
 func load_file(file):
