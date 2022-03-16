@@ -4,7 +4,9 @@ export(ButtonGroup) var group
 
 onready var line_edit_node = get_node("/root/World/LineEdit")
 
-var green_pressed = load("res://Assets/ButtonStyles/green_style_pressed.tres")
+var blue_style_pressed = load("res://Assets/ButtonStyles/blue_style_pressed.tres")
+var blue_style_unpressed = load("res://Assets/ButtonStyles/blue_style_unpressed.tres")
+var blank_style = load("res://Assets/ButtonStyles/blank_style.tres")
 
 signal text_updated
 signal word_submitted
@@ -14,7 +16,10 @@ func _ready():
 		i.connect('pressed', self, 'button_pressed')
 		# https://godotengine.org/qa/64697/tabcontainer-custom_styles-panel-stylebox-resource-script
 		# THIS WORKS!!!
-		i.set("custom_styles/pressed", green_pressed)
+		i.set("custom_styles/hover", blue_style_unpressed)
+		i.set("custom_styles/pressed", blue_style_pressed)
+		i.set("custom_styles/focus", blank_style)
+		i.set("custom_styles/normal", blue_style_unpressed)
 
 func button_pressed():
 	if group.get_pressed_button().text != 'ENTER' and group.get_pressed_button().text != 'BACK':
