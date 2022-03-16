@@ -21,6 +21,19 @@ var word_list_array = []
 # goal word needed to be guessed to win the game
 var goal_word
 
+# dictionary containing all letters of the alphabet
+# used for keeping track of which letters have been used and info about them
+# WHITE - not guessed
+# GRAY - guessed, but not present in word
+# YELLOW - guessed, and present in word but not in correct place
+# GREEN - guessed, and in correct place in word
+var letters_dict = {'a':'white', 'b':'white', 'c':'white', 'd':'white', 'e':'white',
+					'f':'white', 'g':'white', 'h':'white', 'i':'white', 'j':'white',
+					'k':'white', 'l':'white', 'm':'white', 'n':'white', 'o':'white',
+					'p':'white', 'q':'white', 'r':'white', 's':'white', 't':'white',
+					'u':'white', 'v':'white', 'w':'white', 'x':'white', 'y':'white',
+					'z':'white'}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -53,17 +66,36 @@ func _on_VirtualKeyboard_text_updated():
 		word_groups[current_row].get_child(column).get_child(0).text = ''
 
 func _on_VirtualKeyboard_word_submitted():
-	# TODO:
-	# Check if valid word before sumbitting
-	# Check which letters match if any
+	# strip casing
+	var text_to_be_compared = line_edit_node.text
+	text_to_be_compared = text_to_be_compared.to_lower()
 	
-	# If guesses remaining, then continue on
-	if current_row < word_guesses_max - 1:
-		current_row += 1
-		line_edit_node.clear()
-	# Otherwise, end the game
+	# lookup in dictionary
+	if text_to_be_compared in word_list_array:
+		
+		compare_guess_to_goal_word(text_to_be_compared)
+		
+		# If guesses remaining, then continue on
+		if current_row < word_guesses_max - 1:
+			current_row += 1
+			line_edit_node.clear()
+		else:
+			print('***** GAME OVER *****')
+			# TODO play end state of game here
 	else:
-		print('***** GAME OVER *****')
+		print('word not valid!!!')
+		# basically just do not continue
+
+func compare_guess_to_goal_word(guess):
+	print('your guess is ' + guess)
+	
+	# check if goal word matches guess exactly
+	if guess == goal_word:
+		print('***** YOU WIN *****')
+		# TODO play end state of game here
+	else:
+		print('time to check every letter')
+		
 
 # loads in word file line-by-line and creates an array of strings
 func load_file(file):
