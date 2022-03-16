@@ -88,7 +88,7 @@ func _on_VirtualKeyboard_word_submitted():
 			line_edit_node.clear()
 		else:
 			print('***** GAME OVER *****')
-			$AcceptDialog/Label2.text = ('YOU WIN')
+			$AcceptDialog/Label2.text = ('YOU LOSE')
 			$AcceptDialog.popup()
 			# TODO play end state of game here
 	else:
