@@ -27,12 +27,15 @@ var goal_word
 # GRAY - guessed, but not present in word
 # YELLOW - guessed, and present in word but not in correct place
 # GREEN - guessed, and in correct place in word
-var letters_dict = {'a':'green', 'b':'white', 'c':'white', 'd':'white', 'e':'white',
+var letters_dict = {'a':'white', 'b':'white', 'c':'white', 'd':'white', 'e':'white',
 					'f':'white', 'g':'white', 'h':'white', 'i':'white', 'j':'white',
 					'k':'white', 'l':'white', 'm':'white', 'n':'white', 'o':'white',
 					'p':'white', 'q':'white', 'r':'white', 's':'white', 't':'white',
 					'u':'white', 'v':'white', 'w':'white', 'x':'white', 'y':'white',
 					'z':'white'}
+
+# used to update keyboard
+signal update_keyboard
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -91,16 +94,26 @@ func compare_guess_to_goal_word(guess):
 	
 	# check if goal word matches guess exactly
 	if guess == goal_word:
+		for index in goal_word.length():
+			letters_dict[guess[index]] = 'green'
+		emit_signal("update_keyboard", letters_dict)
 		print('***** YOU WIN *****')
 		# TODO play end state of game here
 	else:
 		print('time to check every letter')
-	
-	update_keyboard()
-
-# used to update and change states of keyboard buttons
-func update_keyboard():
-	pass
+		# iterate over every letter in guess
+		# GREEN - if letter matches and in right place
+		# YELLOW - if letter is found in word but NOT in right place
+		# GRAY - if letter is NOT found in word
+		for index in goal_word.length():
+			if guess[index] == goal_word[index]:
+				print('letter: ' + guess[index] + ' matches')
+				# update master letter list as green character
+				letters_dict[guess[index]] = 'green'
+		
+		# at the end, emit signal to update keyboard
+		# pass along the newly updated letters_dict
+		emit_signal("update_keyboard", letters_dict)
 
 # loads in word file line-by-line and creates an array of strings
 func load_file(file):

@@ -9,8 +9,8 @@
 [ext_resource path="res://Assets/ButtonStyles/green_style_unpressed.tres" type="StyleBox" id=7]
 [ext_resource path="res://Assets/ButtonStyles/red_style_pressed.tres" type="StyleBox" id=8]
 [ext_resource path="res://Assets/ButtonStyles/red_style_unpressed.tres" type="StyleBox" id=9]
-[ext_resource path="res://yellow_style_pressed.tres" type="StyleBox" id=10]
-[ext_resource path="res://yellow_style_unpressed.tres" type="StyleBox" id=11]
+[ext_resource path="res://Assets/ButtonStyles/yellow_style_pressed.tres" type="StyleBox" id=10]
+[ext_resource path="res://Assets/ButtonStyles/yellow_style_unpressed.tres" type="StyleBox" id=11]
 [ext_resource path="res://Assets/ButtonStyles/green_style_pressed.tres" type="StyleBox" id=12]
 [ext_resource path="res://Assets/ButtonStyles/blank_style.tres" type="StyleBox" id=13]
 
@@ -692,5 +692,6 @@ rect_min_size = Vector2( 60, 0 )
 group = ExtResource( 3 )
 text = "BACK"
 
+[connection signal="update_keyboard" from="." to="VirtualKeyboard" method="_on_World_update_keyboard"]
 [connection signal="text_updated" from="VirtualKeyboard" to="." method="_on_VirtualKeyboard_text_updated"]
 [connection signal="word_submitted" from="VirtualKeyboard" to="." method="_on_VirtualKeyboard_word_submitted"]

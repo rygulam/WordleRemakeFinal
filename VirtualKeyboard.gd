@@ -4,12 +4,23 @@ export(ButtonGroup) var group
 
 onready var line_edit_node = get_node("/root/World/LineEdit")
 
+var blank_style = load("res://Assets/ButtonStyles/blank_style.tres")
+
 var blue_style_pressed = load("res://Assets/ButtonStyles/blue_style_pressed.tres")
 var blue_style_unpressed = load("res://Assets/ButtonStyles/blue_style_unpressed.tres")
-var blank_style = load("res://Assets/ButtonStyles/blank_style.tres")
+
+var green_style_pressed = load("res://Assets/ButtonStyles/green_style_pressed.tres")
+var green_style_unpressed = load("res://Assets/ButtonStyles/green_style_unpressed.tres")
+
+var yellow_style_pressed = load("res://Assets/ButtonStyles/yellow_style_pressed.tres")
+var yellow_style_unpressed = load("res://Assets/ButtonStyles/yellow_style_unpressed.tres")
+
+var red_style_pressed = load("res://Assets/ButtonStyles/red_style_pressed.tres")
+var red_style_unpressed = load("res://Assets/ButtonStyles/red_style_unpressed.tres")
 
 signal text_updated
 signal word_submitted
+signal butts
 
 func _ready():
 	for i in group.get_buttons():
@@ -34,7 +45,17 @@ func button_pressed():
 # since lineedit doesnt support signal on manual text change... need to do this instead
 func text_updated():
 	emit_signal("text_updated")
-	# fire a manual signal here??? connected to world main script
 
 func word_submitted():
 	emit_signal("word_submitted")
+
+# update the keyboard images with new colors
+func _on_World_update_keyboard(updated_letters_dict):
+	for i in group.get_buttons():
+		# excludes 'enter' and 'back' keys
+		if i.text.to_lower() in updated_letters_dict.keys():
+			if updated_letters_dict[i.text.to_lower()] == 'green':
+				i.set("custom_styles/hover", green_style_unpressed)
+				i.set("custom_styles/pressed", green_style_pressed)
+				i.set("custom_styles/focus", blank_style)
+				i.set("custom_styles/normal", green_style_unpressed)
