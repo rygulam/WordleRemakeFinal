@@ -59,3 +59,13 @@ func _on_World_update_keyboard(updated_letters_dict):
 				i.set("custom_styles/pressed", green_style_pressed)
 				i.set("custom_styles/focus", blank_style)
 				i.set("custom_styles/normal", green_style_unpressed)
+			elif updated_letters_dict[i.text.to_lower()] == 'yellow':
+				i.set("custom_styles/hover", yellow_style_unpressed)
+				i.set("custom_styles/pressed", yellow_style_pressed)
+				i.set("custom_styles/focus", blank_style)
+				i.set("custom_styles/normal", yellow_style_unpressed)
+			elif updated_letters_dict[i.text.to_lower()] == 'gray':
+				i.set("custom_styles/hover", red_style_unpressed)
+				i.set("custom_styles/pressed", red_style_pressed)
+				i.set("custom_styles/focus", blank_style)
+				i.set("custom_styles/normal", red_style_unpressed)

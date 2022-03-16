@@ -110,6 +110,14 @@ func compare_guess_to_goal_word(guess):
 				print('letter: ' + guess[index] + ' matches')
 				# update master letter list as green character
 				letters_dict[guess[index]] = 'green'
+			elif guess[index] in goal_word:
+				print('letter: ' + guess[index] + ' is in word but not right place')
+				# do not override green with yellow
+				if letters_dict[guess[index]] != 'green':
+					letters_dict[guess[index]] = 'yellow'
+			else:
+				print('letter: ' + guess[index] + ' is NOT in word')
+				letters_dict[guess[index]] = 'gray'
 		
 		# at the end, emit signal to update keyboard
 		# pass along the newly updated letters_dict
