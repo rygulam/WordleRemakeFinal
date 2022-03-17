@@ -59,10 +59,10 @@ func _ready():
 	
 	# *******************************************
 	# for testing/debug, manually set word I want
-	goal_word = 'banal'
+	#goal_word = 'banal'
 	# *******************************************
 	
-	print('goal word is: ' + goal_word)
+#	print('goal word is: ' + goal_word)
 	
 	# takes a count of how many times each letter appears in goal word
 	# this is used to propery display yellow letters in top tiles later
@@ -108,16 +108,19 @@ func _on_VirtualKeyboard_word_submitted():
 			current_row += 1
 			line_edit_node.clear()
 		else:
-			print('***** GAME OVER *****')
-			$AcceptDialog/Label2.text = ('YOU LOSE')
+#			print('***** GAME OVER *****')
+			$AcceptDialog/Label2.text = ('YOU LOSE! The word was: ' + str(goal_word).to_upper())
 			$AcceptDialog.popup()
 			# TODO play end state of game here
 	else:
-		print('word not valid!!!')
+#		print('word not valid!!!')
+		$AcceptDialog/Label2.text = ('Word not valid')
+		$AcceptDialog.popup()
+		
 		# basically just do not continue
 
 func compare_guess_to_goal_word(guess, current_row):
-	print('your guess is ' + guess)
+#	print('your guess is ' + guess)
 	
 	# check if goal word matches guess exactly
 	if guess == goal_word:
@@ -129,26 +132,26 @@ func compare_guess_to_goal_word(guess, current_row):
 			word_groups[current_row].get_child(3).texture = green_texture
 			word_groups[current_row].get_child(4).texture = green_texture
 		emit_signal("update_keyboard", letters_dict)
-		print('***** YOU WIN *****')
-		$AcceptDialog/Label2.text = ('YOU WIN')
+#		print('***** YOU WIN *****')
+		$AcceptDialog/Label2.text = ('YOU WIN!')
 		$AcceptDialog.popup()
 		# TODO play end state of game here
 	else:
-		print('time to check every letter')
+#		print('time to check every letter')
 		# iterate over every letter in guess
 		# GREEN - if letter matches and in right place
 		# YELLOW - if letter is found in word but NOT in right place
 		# GRAY - if letter is NOT found in word
 		for index in goal_word.length():
 			if guess[index] == goal_word[index]:
-				print('letter: ' + guess[index] + ' matches')
+#				print('letter: ' + guess[index] + ' matches')
 				# update master letter list as green character
 				letters_dict[guess[index]] = 'green'
 				# update texture in word display on top
 				#word_groups[current_row].get_child(index).texture = green_texture
 				tiles_to_update[word_groups[current_row].get_child(index)] = 'green'
 			elif guess[index] in goal_word:
-				print('letter: ' + guess[index] + ' is in word but not right place')
+#				print('letter: ' + guess[index] + ' is in word but not right place')
 				# update texture
 				#word_groups[current_row].get_child(index).texture = yellow_texture
 				tiles_to_update[word_groups[current_row].get_child(index)] = 'yellow'
@@ -156,7 +159,7 @@ func compare_guess_to_goal_word(guess, current_row):
 				if letters_dict[guess[index]] != 'green':
 					letters_dict[guess[index]] = 'yellow'
 			else:
-				print('letter: ' + guess[index] + ' is NOT in word')
+#				print('letter: ' + guess[index] + ' is NOT in word')
 				# update texture
 				#word_groups[current_row].get_child(index).texture = gray_texture
 				tiles_to_update[word_groups[current_row].get_child(index)] = 'gray'
@@ -188,17 +191,17 @@ func compare_guess_to_goal_word(guess, current_row):
 						guess_word_letter_count[key.get_child(0).text.to_lower()] += 1
 					else:
 						guess_word_letter_count[key.get_child(0).text.to_lower()] = 1
-				print('guess word: ' + str(guess_word_letter_count[key.get_child(0).text.to_lower()]))
-				print('goal word: ' + str(goal_word_letter_count[key.get_child(0).text.to_lower()]))
+#				print('guess word: ' + str(guess_word_letter_count[key.get_child(0).text.to_lower()]))
+#				print('goal word: ' + str(goal_word_letter_count[key.get_child(0).text.to_lower()]))
 				if (guess_word_letter_count[key.get_child(0).text.to_lower()] <= goal_word_letter_count[key.get_child(0).text.to_lower()]):
 					key.texture = yellow_texture
 				else:
 					key.texture = gray_texture
 			elif tiles_to_update[key] == 'gray':
 				key.texture = gray_texture
-		print(tiles_to_update)
-		print(guess_word_letter_count)
-		print(goal_word_letter_count)
+#		print(tiles_to_update)
+#		print(guess_word_letter_count)
+#		print(goal_word_letter_count)
 		
 		tiles_to_update.clear()
 		guess_word_letter_count.clear()
@@ -219,7 +222,4 @@ func load_file(file):
 	return
 
 func _on_AcceptDialog_confirmed():
-	get_tree().reload_current_scene()
-
-func _on_AcceptDialog2_confirmed():
 	get_tree().reload_current_scene()
