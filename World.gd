@@ -20,6 +20,7 @@ var word_list_array = []
 
 # goal word needed to be guessed to win the game
 var goal_word
+var goal_word_letter_count = {}
 
 # dictionary containing all letters of the alphabet
 # used for keeping track of which letters have been used and info about them
@@ -51,7 +52,23 @@ func _ready():
 	# seeds the RNG based on current time
 	randomize()
 	goal_word = word_list_array[randi() % word_list_array.size()]
+	
+	# *******************************************
+	# for testing/debug, manually set word I want
+	goal_word = 'hello'
+	# *******************************************
+	
 	print('goal word is: ' + goal_word)
+	
+	# takes a count of how many times each letter appears in goal word
+	# this is used to propery display yellow letters in top tiles later
+	# stores as dict. e.g. if goal word is 'hello'
+	# goal_word_letter_dict == {h:1, e:1, l:2, o:1}
+	for letter in goal_word:
+		if letter in goal_word_letter_count:
+			goal_word_letter_count[letter] += 1
+		else:
+			goal_word_letter_count[letter] = 1
 	
 	# word guesses total
 	word_guesses_max = word_groups_node.get_child_count()
@@ -141,6 +158,10 @@ func compare_guess_to_goal_word(guess, current_row):
 		# at the end, emit signal to update keyboard
 		# pass along the newly updated letters_dict
 		emit_signal("update_keyboard", letters_dict)
+		
+		# keep track of and update colors at the end instead
+		# store color to be changed to AND letter maybe letter amount
+		# 
 
 # loads in word file line-by-line and creates an array of strings
 func load_file(file):

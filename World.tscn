@@ -708,7 +708,7 @@ __meta__ = {
 [node name="Label2" type="Label" parent="AcceptDialog"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 72.0
+margin_right = 75.0
 margin_bottom = 22.0
 text = "YOU WIN!"
 
