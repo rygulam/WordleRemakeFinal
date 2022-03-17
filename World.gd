@@ -21,6 +21,10 @@ var word_list_array = []
 # goal word needed to be guessed to win the game
 var goal_word
 var goal_word_letter_count = {}
+var guess_word_letter_count = {}
+
+# used to update top tiles at end of comparison of guess word to goal word
+var tiles_to_update = {}
 
 # dictionary containing all letters of the alphabet
 # used for keeping track of which letters have been used and info about them
@@ -55,7 +59,7 @@ func _ready():
 	
 	# *******************************************
 	# for testing/debug, manually set word I want
-	goal_word = 'hello'
+	goal_word = 'banal'
 	# *******************************************
 	
 	print('goal word is: ' + goal_word)
@@ -141,27 +145,63 @@ func compare_guess_to_goal_word(guess, current_row):
 				# update master letter list as green character
 				letters_dict[guess[index]] = 'green'
 				# update texture in word display on top
-				word_groups[current_row].get_child(index).texture = green_texture
+				#word_groups[current_row].get_child(index).texture = green_texture
+				tiles_to_update[word_groups[current_row].get_child(index)] = 'green'
 			elif guess[index] in goal_word:
 				print('letter: ' + guess[index] + ' is in word but not right place')
 				# update texture
-				word_groups[current_row].get_child(index).texture = yellow_texture
+				#word_groups[current_row].get_child(index).texture = yellow_texture
+				tiles_to_update[word_groups[current_row].get_child(index)] = 'yellow'
 				# do not override green with yellow
 				if letters_dict[guess[index]] != 'green':
 					letters_dict[guess[index]] = 'yellow'
 			else:
 				print('letter: ' + guess[index] + ' is NOT in word')
 				# update texture
-				word_groups[current_row].get_child(index).texture = gray_texture
+				#word_groups[current_row].get_child(index).texture = gray_texture
+				tiles_to_update[word_groups[current_row].get_child(index)] = 'gray'
 				letters_dict[guess[index]] = 'gray'
 		
 		# at the end, emit signal to update keyboard
 		# pass along the newly updated letters_dict
 		emit_signal("update_keyboard", letters_dict)
 		
-		# keep track of and update colors at the end instead
-		# store color to be changed to AND letter maybe letter amount
-		# 
+		# changes all tiles colors at the end
+		# this helps to solve the duplicate letters problem
+		# see: https://www.reddit.com/r/wordle/comments/ry49ne/illustration_of_what_happens_when_your_guess_has/
+		# update below to check each letter and then NOT change to yellow if limit is reached
+		# e.g. number of tiles is represented already in goal word
+		# NEED to do ALL greens FIRST! then move onto yellows to work
+		for key in tiles_to_update:
+			if tiles_to_update[key] == 'green':
+				key.texture = green_texture
+				if key.get_child(0).text.to_lower() in goal_word_letter_count:
+					if guess_word_letter_count.has(key.get_child(0).text.to_lower()):
+						guess_word_letter_count[key.get_child(0).text.to_lower()] += 1
+					else:
+						guess_word_letter_count[key.get_child(0).text.to_lower()] = 1
+		# Once all greens are checked, move onto yellows and grays
+		for key in tiles_to_update:
+			if tiles_to_update[key] == 'yellow':
+				if key.get_child(0).text.to_lower() in goal_word_letter_count:
+					if guess_word_letter_count.has(key.get_child(0).text.to_lower()):
+						guess_word_letter_count[key.get_child(0).text.to_lower()] += 1
+					else:
+						guess_word_letter_count[key.get_child(0).text.to_lower()] = 1
+				print('guess word: ' + str(guess_word_letter_count[key.get_child(0).text.to_lower()]))
+				print('goal word: ' + str(goal_word_letter_count[key.get_child(0).text.to_lower()]))
+				if (guess_word_letter_count[key.get_child(0).text.to_lower()] <= goal_word_letter_count[key.get_child(0).text.to_lower()]):
+					key.texture = yellow_texture
+				else:
+					key.texture = gray_texture
+			elif tiles_to_update[key] == 'gray':
+				key.texture = gray_texture
+		print(tiles_to_update)
+		print(guess_word_letter_count)
+		print(goal_word_letter_count)
+		
+		tiles_to_update.clear()
+		guess_word_letter_count.clear()
 
 # loads in word file line-by-line and creates an array of strings
 func load_file(file):
