@@ -113,9 +113,9 @@ func _on_VirtualKeyboard_word_submitted():
 			$AcceptDialog.popup()
 			# TODO play end state of game here
 	else:
-#		print('word not valid!!!')
-		$AcceptDialog/Label2.text = ('Word not valid')
-		$AcceptDialog.popup()
+		print('word not valid!!!')
+#		$AcceptDialog/Label2.text = ('Word not valid')
+#		$AcceptDialog.popup()
 		
 		# basically just do not continue
 
